@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recettes EASY
+{% endblock %}
+
+{% block body %}
+	{% if not app.user  %}
+		<p>Vous devez être connecté pour ajouter une recette.
+		</p>
+
+	{% else %}
+	<div class="example-wrapper" style="margin: 1em auto;
+    max-width: 800px;
+    width: 95%;
+    font: 18px/1.5 sans-serif;">
+		<h1 style="text-align: center;margin-bottom: 50px;margin-top: 50px;">Ajouter une recette</h1>
+
+		{{ form_start(formAdd)}}
+		{{ form_row(formAdd.recette, {'label': "Nom de la recette",'attr': {'placeholder': 'Nom de la recette'}})}}
+		{{ form_row(formAdd.descriptionrecette, {'label': "Description",'attr': {'placeholder': 'Decrivez la recette'}})}}
+		{{ form_row(formAdd.petitephrase, {'label': "Petite phrase",'attr': {'placeholder': 'Petite phrase'}})}}
+		{{ form_row(formAdd.idustensile)}}
+		{# {{ form_row(formAdd.iding)}} #}
+		{{ form_row(formAdd.idcateg)}}
+		{{ form_row(formAdd.idtheme)}}
+		{{ form_row(formAdd.idastuce)}}
+		
+		
+		<div class="form-group row"><button type="submit" class="btn btn-success" style="margin: auto;">Ajouter</button></div>
+{{ form_end(formAdd)}}
+
+		<h1 style="text-align: center;margin-top: 50px;margin-bottom: 50px;">Recettes publiées</h1>
+		{# {{ dump(listeRecette)}} #}
+		
+			<table id="listeRecettePubliee">
+				<thead>
+					<tr class="table-primary" style="    text-align: center;">
+						<th>Numéro</th>
+						<th>Nom de la recette</th>
+						<th>Date</th>
+						<th >Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					{% for recette in listeRecette %}
+					<tr>
+						<td style="    text-align: center;">{{ recette.idrecette }}</td>
+						<td style="    text-align: center;">{{ recette.recette }}</td>
+						{# <td>{{ recette.datepublication }}</td> #}
+						<td style="    text-align: center;">{{ recette.datePublication | date("d/m/Y") }}</td>
+						<td style="    text-align: center;"> <a href="{{ path('modifier', { 'id': recette.idrecette })}}"> <button type="submit" class="btn btn-primary">Modifier</button></a> 
+							 <a href="{{ path('supprimer', { 'id': recette.idrecette })}}"> <button type="submit" class="btn btn-danger" onclick="return confirm('Voulez vous vraiment la supprimer ?')">Supprimer</button></a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% endif %}
+
+	<script>
+		$('.selectpicker').selectpicker();
+	
+		// datatable
+		$(document).ready(function () {
+		$('#listeRecettePubliee').DataTable({
+				dom: 'lftrip',
+				responsive: true,
+				language: {
+					url: "{{ absolute_url('/dataTable/francais.json') }}"
+					}
+			});
+		});
+	</script>
+
+{% endblock %}

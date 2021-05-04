@@ -1,0 +1,178 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recette
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	<div class="example-wrapper">
+
+		<div style="display: flex;">
+			<div class="card mb-3" style="width: 100rem;">
+				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-indicators">
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+					</div>
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<img src="../image/gateau/test1.jpg" class="d-block w-100" alt="...">
+						</div>
+						<div class="carousel-item">
+							<img src="../image/gateau/test2.jpg" class="d-block w-100" alt="...">
+						</div>
+						<div class="carousel-item">
+							<img src="../image/gateau/test3.jpg" class="d-block w-100" alt="...">
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+
+
+			</div>
+		</a>
+	</div>
+	<div style="border: 1px solid black; background-color: grey;top: 0;padding: 5px;">
+		<p>Matériel:
+		</p>
+		<ul>
+			{% for ustensile in infoRecette.Idustensile %}
+				<li>{{ ustensile.ustensile }}
+				</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+	<div style="border: 1px solid black;position: sticky;position: -webkit-sticky;position: sticky;top: 0;padding: 5px; background-color: antiquewhite;">
+		<p>Ingrédients:
+		</p>
+		<ul>
+			{% for ing in infoRecette.idIng %}
+				<li>{{ ing.ingredient }}
+				</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+	<div class="jumbotron">
+		<h1 class="display-3">{{ infoRecette.recette}}</h1>
+		<p class="lead">{{ infoRecette.petitePhrase}}</p>
+		<hr class="my-4">
+		<p>{{ infoRecette.descriptionrecette}}</p>
+		<p class="lead">
+
+
+			Préparation:
+			<br>
+			{{ preparation.etape}}
+
+		</p>
+	</div>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+	aaa
+	<br>
+
+	<div class="card mb-3" style="max-width: 50rem;border-color: #eb6864;">
+		<div class="card-header">Trucs et astuces de la recette</div>
+		<div
+			class="card-body">
+			{# <h4 class="card-title">Astuce </h4> #}
+			
+				
+			
+			{% for astuce in infoRecette.idAstuce %}
+			<a href="">
+				<p class="card-text">{{ astuce.astuce }}</p>
+			</a>
+			{% endfor %}
+			
+		</div>
+	</div>
+
+
+</div></div>{% endblock %}

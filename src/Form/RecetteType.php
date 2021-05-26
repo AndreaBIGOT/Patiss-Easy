@@ -4,9 +4,9 @@ namespace App\Form;
 
 use App\Entity\Recette;
 use App\Entity\Categorie;
-use App\Entity\Ingredient;
 use App\Entity\Ustensile;
 use App\Entity\Astuce;
+use App\Entity\Preparation;
 use App\Entity\Theme;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\MakerBundle\Doctrine\EntityRelation;
@@ -33,13 +33,6 @@ class RecetteType extends AbstractType
                 'choice_label' => "categorie",
                 'attr' => ['class' => "selectpicker","multiple" => "", 'data-live-search' => "true", 'title' => "Catégories"],
             ])
-            // ->add('iding', EntityType::class, [
-            //     'label' => "Ingrédient",
-            //     'class' => Ingredient::class,
-            //     'multiple' => true,
-            //     'choice_label' => "ingredient",
-            //     'attr' => ['class' => "selectpicker","multiple" => "", 'data-live-search' => "true", 'title' => "Ingrédients"],
-            // ])
             ->add('idustensile', EntityType::class, [
                 'label' => "Ustensile",
                 'class' => Ustensile::class,
@@ -60,8 +53,7 @@ class RecetteType extends AbstractType
                 'multiple' => true,
                 'choice_label' => "theme",
                 'attr' => ['class' => "selectpicker","multiple" => "", 'data-live-search' => "true", 'title' => "Thèmes"],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

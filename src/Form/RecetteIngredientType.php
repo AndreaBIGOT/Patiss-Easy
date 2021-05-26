@@ -16,15 +16,8 @@ class RecetteIngredientType extends AbstractType
         $builder
             ->add('quantite')
             ->add('idrecette')
-            // ->add('iding')
-            // ->add('iding', EntityType::class, [
-            //     'label' => "Ingrédient",
-            //     'class' => Ingredient::class,
-            //     'multiple' => true,
-            //     'choice_label' => "ingredient",
-            //     'attr' => ['class' => "selectpicker","multiple" => "", 'data-live-search' => "true", 'title' => "Ingrédients"],
-            // ])
-        ;
+            ->add('iding')
+            ->add('unite');
     }
 
     public function configureOptions(OptionsResolver $resolver)

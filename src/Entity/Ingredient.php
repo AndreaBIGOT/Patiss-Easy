@@ -46,24 +46,11 @@ class Ingredient
     private $idlieu;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Recette", mappedBy="iding")
-     */
-    private $idrecette;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->idlieu = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->idrecette = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function __toString()
-    {
-        return $this->ingredient;
     }
 
     public function getIding(): ?int
@@ -107,31 +94,9 @@ class Ingredient
         return $this;
     }
 
-    /**
-     * @return Collection|Recette[]
-     */
-    public function getIdrecette(): Collection
+    public function __toString()
     {
-        return $this->idrecette;
-    }
-
-    public function addIdrecette(Recette $idrecette): self
-    {
-        if (!$this->idrecette->contains($idrecette)) {
-            $this->idrecette[] = $idrecette;
-            $idrecette->addIding($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdrecette(Recette $idrecette): self
-    {
-        if ($this->idrecette->removeElement($idrecette)) {
-            $idrecette->removeIding($this);
-        }
-
-        return $this;
+        return $this->ingredient;
     }
 
 }

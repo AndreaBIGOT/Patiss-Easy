@@ -17,36 +17,19 @@
 
 			{{ form_start(formAddIng)}}
 			{{ form_row(formAddIng.quantite)}}
-
+			{{ form_row(formAddIng.unite)}}
 
 			{{ form_row(formAddIng.idrecette)}}
 
-			{# {{ form_row(formAddIng.iding)}} #}
+			
 
 
 			<label for="validationDefault02">Ingrédient</label>
-			<select id="ingredient" name="ingredient[]" id="" class="selectpicker">
+			
 
-				{% for ing in listeIng %}}
-					<option value="{{ ing.iding }}">
-						{{ ing.ingredient}}
-					</option>
-				{% endfor %}
-			</select>
 
-			<div class="col-md-6 mb-3">
-				<div class="form-check-inline">
-					<input type="checkbox" class="form-control" id="addNewIngredient" name="addNewIngredient">
-					<label for="addNewIngredient">Ajouter un nouvel ingrédient</label>
-				</div>
-
-				<div id="addIngredient" style="display:none;">
-					<div class='newIngContent'>
-						<input disabled="disabled" type="text" class="form-control" name="nomNewIngredient[]">
-					</div>
-					<button type="button" onclick="addInputNewIngredient()">Ajouter un nouvel ingrédient</button>
-				</div>
-			</div>
+			{{ form_row(formAddIng.iding)}}
+			
 
 			<div class="form-group row">
 				<button type="submit" class="btn btn-success" style="margin: auto;">Ajouter</button>
@@ -55,30 +38,29 @@
 
 		</div>
 	{% endif %}
-
+{# 
 	<script>
 		$('.selectpicker').selectpicker();
 
-function addInputNewIngredient() {
-var input = $("#addIngredient .newIngContent input:first-child");
-input.clone().appendTo("#addIngredient .newIngContent").val("");
-}
+		function addInputNewIngredient() {
+			var input = $("#addIngredient .newIngContent input:first-child");
+			input.clone().appendTo("#addIngredient .newIngContent").val("");
+		}
 
-// Rend actif ou innactif le bloc "Ajouter un nouvel Ingredient"
-$("#addNewIngredient").on("click", function () {
-$("#addIngredient").toggle();
+		// Rend actif ou innactif le bloc "Ajouter un nouvel Ingredient"
+		$("#addNewIngredient").on("click", function () {
+			$("#addIngredient").toggle();
 
-var inputAdd = $("#addIngredient input");
-var display = inputAdd.css('display');
-if (display === "none") {
-inputAdd.prop("disabled", "disabled");
-inputAdd.attr("disabled", "disabled");
-
-} else {
-inputAdd.removeProp("disabled");
-inputAdd.removeAttr("disabled");
-}
-});
-	</script>
+			var inputAdd = $("#addIngredient input");
+			var display = inputAdd.css('display');
+			if (display === "none") {
+				inputAdd.prop("disabled", "disabled");
+				inputAdd.attr("disabled", "disabled");
+			} else {
+				inputAdd.removeProp("disabled");
+				inputAdd.removeAttr("disabled");
+			}
+		});
+	</script> #}
 
 {% endblock %}

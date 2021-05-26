@@ -44,6 +44,7 @@ class Recette
      */
     private $datepublication;
 
+
     /**
      * @var string|null
      *
@@ -84,21 +85,6 @@ class Recette
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="RecetteIngredient", inversedBy="idrecette")
-     * @ORM\JoinTable(name="recette_ingredient",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="idRecette", referencedColumnName="idRecette")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="idIng", referencedColumnName="idIng")
-     *   }
-     * )
-     */
-    private $iding;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
      * @ORM\ManyToMany(targetEntity="Theme", inversedBy="idrecette")
      * @ORM\JoinTable(name="recette_theme",
      *   joinColumns={
@@ -126,6 +112,22 @@ class Recette
      */
     private $idustensile;
 
+
+        /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="RecetteIngredient", inversedBy="idrecette")
+     * @ORM\JoinTable(name="recette_ingredient",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="idRecette", referencedColumnName="idRecette")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="idRecette", referencedColumnName="idRecette")
+     *   }
+     * )
+     */
+     private $recetteIngredient;
+
     /**
      * Constructor
      */
@@ -133,19 +135,19 @@ class Recette
     {
         $this->idastuce = new \Doctrine\Common\Collections\ArrayCollection();
         $this->idcateg = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->iding = new \Doctrine\Common\Collections\ArrayCollection();
         $this->idtheme = new \Doctrine\Common\Collections\ArrayCollection();
         $this->idustensile = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function __toString()
-    {
-        return $this->recette;
+        $this->recetteIngredient = new ArrayCollection();
     }
 
     public function getIdrecette(): ?int
     {
         return $this->idrecette;
+    }
+
+    public function getRecetteIngredient(): Collection
+    {
+        return $this->recetteIngredient;
     }
 
     public function getRecette(): ?string
@@ -228,27 +230,18 @@ class Recette
         return $this->idcateg;
     }
 
-
-    /**
-     * @return Collection|Ingredient[]
-     */
-    public function getIding(): Collection
+    public function addIdcateg(Categorie $idcateg): self
     {
-        return $this->iding;
-    }
-
-    public function addIding(Ingredient $iding): self
-    {
-        if (!$this->iding->contains($iding)) {
-            $this->iding[] = $iding;
+        if (!$this->idcateg->contains($idcateg)) {
+            $this->idcateg[] = $idcateg;
         }
 
         return $this;
     }
 
-    public function removeIding(Ingredient $iding): self
+    public function removeIdcateg(Categorie $idcateg): self
     {
-        $this->iding->removeElement($iding);
+        $this->idcateg->removeElement($idcateg);
 
         return $this;
     }
@@ -301,20 +294,50 @@ class Recette
         return $this;
     }
 
-    public function addIdcateg(Categorie $idcateg): self
+    public function addRecetteIngredient(RecetteIngredient $recetteIngredient): self
     {
-        if (!$this->idcateg->contains($idcateg)) {
-            $this->idcateg[] = $idcateg;
+        if (!$this->recetteIngredient->contains($recetteIngredient)) {
+            $this->recetteIngredient[] = $recetteIngredient;
         }
 
         return $this;
     }
 
-    public function removeIdcateg(Categorie $idcateg): self
+    public function removeRecetteIngredient(RecetteIngredient $recetteIngredient): self
     {
-        $this->idcateg->removeElement($idcateg);
+        $this->recetteIngredient->removeElement($recetteIngredient);
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->recette;
+    }
+
+    public function getImages(){
+
+        $images=array();
+
+        $imgDir= 'image/gateau/recette-id-'.$this->idrecette;
+
+        if ( is_dir($imgDir) && $handle= opendir($imgDir)) {
+            
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != ".."){
+                    if (str_contains($entry, '.jpg') || str_contains($entry, '.jpeg') || str_contains($entry, '.png') ){
+                        $images[]= "/".$imgDir."/".$entry;
+                    }
+                }
+            }
+            closedir($handle);
+        }
+
+        if (empty($images)) {
+            $images= ['/image/gateau/no-image.jpg'];
+        }
+
+        return $images;
     }
 
 }

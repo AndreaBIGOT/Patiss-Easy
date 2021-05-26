@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RecetteIngredient
  *
- * @ORM\Table(name="recette_ingredient", indexes={@ORM\Index(name="recette_ingredient_ibfk_1", columns={"idRecette"}), @ORM\Index(name="IDX_17C041A9B1A786E8", columns={"idIng"})})
+ * @ORM\Table(name="recette_ingredient", indexes={@ORM\Index(name="idRecette", columns={"idRecette"}), @ORM\Index(name="IDX_17C041A9B1A786E8", columns={"idIng"})})
  * @ORM\Entity
  */
 class RecetteIngredient
@@ -22,21 +22,18 @@ class RecetteIngredient
     private $id;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="quantite", type="string", precision=10, scale=0, nullable=false)
+     * @ORM\Column(name="quantite", type="float", nullable=false)
      */
     private $quantite;
 
     /**
-     * @var \Recette
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Recette")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idRecette", referencedColumnName="idRecette")
-     * })
+     * @ORM\Column(name="unite", type="string", length=4, nullable=false)
      */
-    private $idrecette;
+    private $unite;
 
     /**
      * @var \Ingredient
@@ -48,31 +45,41 @@ class RecetteIngredient
      */
     private $iding;
 
+    /**
+     * @var \Recette
+     *
+     * @ORM\ManyToOne(targetEntity="Recette")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idRecette", referencedColumnName="idRecette")
+     * })
+     */
+    private $idrecette;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getQuantite(): ?string
+    public function getQuantite(): ?float
     {
         return $this->quantite;
     }
 
-    public function setQuantite(String $quantite): self
+    public function setQuantite(int $quantite): self
     {
         $this->quantite = $quantite;
 
         return $this;
     }
 
-    public function getIdrecette(): ?Recette
+    public function getUnite(): ?string
     {
-        return $this->idrecette;
+        return $this->unite;
     }
 
-    public function setIdrecette(?Recette $idrecette): self
+    public function setUnite(string $unite): self
     {
-        $this->idrecette = $idrecette;
+        $this->unite = $unite;
 
         return $this;
     }
@@ -85,6 +92,18 @@ class RecetteIngredient
     public function setIding(?Ingredient $iding): self
     {
         $this->iding = $iding;
+
+        return $this;
+    }
+
+    public function getIdrecette(): ?Recette
+    {
+        return $this->idrecette;
+    }
+
+    public function setIdrecette(?Recette $idrecette): self
+    {
+        $this->idrecette = $idrecette;
 
         return $this;
     }

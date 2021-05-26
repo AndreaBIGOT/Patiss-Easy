@@ -17,6 +17,7 @@
 		}
 	</style>
 
+
 	<div class="example-wrapper">
 
 		<div style="display: flex;">
@@ -28,15 +29,14 @@
 						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
 					</div>
 					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<img src="../image/gateau/test1.jpg" class="d-block w-100" alt="...">
-						</div>
-						<div class="carousel-item">
-							<img src="../image/gateau/test2.jpg" class="d-block w-100" alt="...">
-						</div>
-						<div class="carousel-item">
-							<img src="../image/gateau/test3.jpg" class="d-block w-100" alt="...">
-						</div>
+						{% for img in infoRecette.images %}
+							<div class="carousel-item active">
+							
+								<img src="{{img}}" class="d-block w-100" alt="...">
+							</div>
+						{% endfor %}
+						
+						
 					</div>
 					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
 						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -64,12 +64,11 @@
 
 	</div>
 	<div style="border: 1px solid black;position: sticky;position: -webkit-sticky;position: sticky;top: 0;padding: 5px; background-color: antiquewhite;">
-		<p>Ingrédients:
-		</p>
+		<p>Ingrédients:</p>
+	
 		<ul>
-			{% for ing in infoRecette.idIng %}
-				<li>{{ ing.ingredient }}
-				</li>
+			{% for ing in infoRecette.recetteIngredient %} 
+				<li>{{ ing.quantite }}{{ ing.unite }} de {{ ing.iding.ingredient }}</li>
 			{% endfor %}
 		</ul>
 

@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Recette;
 use App\Entity\Categorie;
-use App\Entity\Ingredient;
 use App\Form\RecetteType;
-use App\Form\RecetteIngredientType;
+use App\Entity\Ingredient;
 use App\Entity\Preparation;
 use App\Entity\RecetteIngredient;
+use App\Form\RecetteIngredientType;
+use App\Form\RecettePreparationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,15 +42,25 @@ class RecetteController extends AbstractController
     }
 
     /**
-     * @Route("/recettes", name="recettes")
+     * @Route("/recettes/categ/{idCateg}", name="recettes")
      */
-    public function recettes(): Response
+    public function recettes(Categorie $idCateg =null, EntityManagerInterface $manager): Response
     {
         // Liste de toutes les recettes
         $repository = $this->getDoctrine()->getRepository(Recette::class);
-        $recettes = $repository->findAll();
+        // $recettes = $repository->findAll();
 
-        // dd($recettes);
+        
+        $recettes = $manager->createQuery(
+            'SELECT r, c
+            FROM App\Entity\Recette r
+            INNER JOIN r.idcateg c
+            WHERE c.idcateg = :id'
+        )->setParameter('id', $idCateg);
+
+        // $query = $recettes->getQuery();
+        $recettes= $recettes->execute();
+        
 
         return $this->render('recette/recettes.html.twig', [
             'listRecette' => $recettes,
@@ -98,8 +109,7 @@ class RecetteController extends AbstractController
             $manager->persist($data);
             $manager->flush();
             
-            return $this->redirectToRoute('ajouterIng', ['idRecette' => $data->getIdrecette()]);
-
+            return $this->redirectToRoute('ajouterPrep', ['idRecette' => $data->getIdrecette()]);
 
         }
 
@@ -110,47 +120,56 @@ class RecetteController extends AbstractController
     }
 
     /**
+     * @Route("/admin/ajouterPrep/{idRecette}", name="ajouterPrep")
+     */
+    public function ajouterPrep(Request $request, Recette $idRecette, EntityManagerInterface $manager){
+        $recettePrep= new Preparation();
+        $recettePrep->setIdrecette($idRecette);
+      
+        $formAddPrep = $this->createForm(RecettePreparationType::class, $recettePrep);
+        $formAddPrep->handleRequest($request);
+
+        if ($formAddPrep->isSubmitted() && $formAddPrep->isValid()) {
+            // toutes les infos passent sauf ing    veut mettre post dans data
+
+            $data = $formAddPrep->getData();
+            
+            $manager->persist($recettePrep);
+            $manager->flush();
+            
+            return $this->redirectToRoute('ajouterIng', ["idRecette" => $idRecette->getIdrecette()]);
+        }
+
+     
+        return $this->render('security/ajouterPrep.html.twig', [
+            "formAddPrep" => $formAddPrep->createView()
+        ]);
+    }
+
+    /**
      * @Route("/admin/ajouterIng/{idRecette}", name="ajouterIng")
      */
     public function ajouterIng(Request $request, Recette $idRecette, EntityManagerInterface $manager){
         $recetteIng= new RecetteIngredient();
         $recetteIng->setIdrecette($idRecette);
-
+      
         $formAddIng = $this->createForm(RecetteIngredientType::class, $recetteIng);
         $formAddIng->handleRequest($request);
 
-        // Liste des ingrédients
-        $repository = $this->getDoctrine()->getRepository(Ingredient::class);
-        $ingredients = $repository->findAll();
-
-// dd($formAddIng);
         if ($formAddIng->isSubmitted() && $formAddIng->isValid()) {
             // toutes les infos passent sauf ing    veut mettre post dans data
 
             $data = $formAddIng->getData();
-
-            $idIng= $_POST['ingredient'];
-
-            $getIng= $data->getIding();
-            $getIng= $idIng;
-          
-            // dd($getIng);
-
             
-// dd($data);
-            
-            $manager->persist($data);
+            $manager->persist($recetteIng);
             $manager->flush();
             
-            return $this->redirectToRoute('index');
-
-
+            return $this->redirectToRoute('ajouterIng', ["idRecette" => $idRecette->getIdrecette()]);
         }
 
      
         return $this->render('security/ajouterIng.html.twig', [
-            "formAddIng" => $formAddIng->createView(),
-            "listeIng"  => $ingredients
+            "formAddIng" => $formAddIng->createView()
         ]);
     }
 

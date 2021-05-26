@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recettes EASY
+{% endblock %}
+
+{% block body %}
+	{% if not app.user  %}
+		<p>Vous devez être connecté pour ajouter une recette.
+		</p>
+
+	{% else %}
+		<div class="example-wrapper" style="margin: 1em auto;max-width: 800px; width: 95%;font: 18px/1.5 sans-serif;">
+			<h1 style="text-align: center;margin-bottom: 50px;margin-top: 50px;">Ajouter la préparation</h1>
+
+			{{ form_start(formAddPrep)}}
+			{{ form_row(formAddPrep.etape)}}
+
+
+			{{ form_row(formAddPrep.idrecette)}}
+
+
+			<div class="form-group row">
+				<button type="submit" class="btn btn-success" style="margin: auto;">Ajouter</button>
+			</div>
+			{{ form_end(formAddPrep)}}
+
+		</div>
+	{% endif %}
+
+
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recettes EASY
+{% block title %}Admin
 {% endblock %}
 
 {% block body %}
@@ -25,8 +25,8 @@
 		{{ form_row(formAdd.idastuce)}}
 		
 		
-		<div class="form-group row"><button type="submit" class="btn btn-success" style="margin: auto;">Ajouter</button></div>
-{{ form_end(formAdd)}}
+		<div class="form-group row"><button type="submit" class="btn btn-success" style="margin: auto;width: auto;">Ajouter</button></div>
+		{{ form_end(formAdd)}}
 
 		<h1 style="text-align: center;margin-top: 50px;margin-bottom: 50px;">Recettes publiées</h1>
 		
@@ -45,7 +45,6 @@
 					<tr>
 						<td style="    text-align: center;">{{ recette.idrecette }}</td>
 						<td style="    text-align: center;">{{ recette.recette }}</td>
-						{# <td>{{ recette.datepublication }}</td> #}
 						<td style="    text-align: center;">{{ recette.datePublication | date("d/m/Y") }}</td>
 						<td style="    text-align: center;"> <a href="{{ path('modifier', { 'id': recette.idrecette })}}"> <button type="submit" class="btn btn-primary">Modifier</button></a> 
 							 <a href="{{ path('supprimer', { 'id': recette.idrecette })}}"> <button type="submit" class="btn btn-danger" onclick="return confirm('Voulez vous vraiment la supprimer ?')">Supprimer</button></a></td>

@@ -19,159 +19,95 @@
 
 
 	<div class="example-wrapper">
-
 		<div style="display: flex;">
 			<div class="card mb-3" style="width: 100rem;">
 				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-					<div class="carousel-indicators">
-						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-					</div>
+					<ol class="carousel-indicators">
+						{% set i=0 %}	
+						{% for img in infoRecette.images %}
+													
+								<li data-target="#carouselExampleIndicators" data-slide-to="{{i}}" class="{% if loop.first %} active{% endif %}"></li>
+							{% set i= i+1 %}	
+						{% endfor %}
+					</ol>
 					<div class="carousel-inner">
 						{% for img in infoRecette.images %}
-							<div class="carousel-item active">
+							<div class="carousel-item {% if loop.first %} active{% endif %} "> 
 							
 								<img src="{{img}}" class="d-block w-100" alt="...">
 							</div>
 						{% endfor %}
 						
-						
 					</div>
-					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
 						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Next</span>
-					</button>
+						<span class="sr-only">Next</span>
+					</a>
 				</div>
-
-
 			</div>
-		</a>
-	</div>
-	<div style="border: 1px solid black; background-color: grey;top: 0;padding: 5px;">
-		<p>Matériel:
-		</p>
-		<ul>
-			{% for ustensile in infoRecette.Idustensile %}
-				<li>{{ ustensile.ustensile }}
-				</li>
-			{% endfor %}
-		</ul>
-
-	</div>
-	<div style="border: 1px solid black;position: sticky;position: -webkit-sticky;position: sticky;top: 0;padding: 5px; background-color: antiquewhite;">
-		<p>Ingrédients:</p>
-	
-		<ul>
-			{% for ing in infoRecette.recetteIngredient %} 
-				<li>{{ ing.quantite }}{{ ing.unite }} de {{ ing.iding.ingredient }}</li>
-			{% endfor %}
-		</ul>
-
-	</div>
-	<div class="jumbotron">
-		<h1 class="display-3">{{ infoRecette.recette}}</h1>
-		<p class="lead">{{ infoRecette.petitePhrase}}</p>
-		<hr class="my-4">
-		<p>{{ infoRecette.descriptionrecette}}</p>
-		<p class="lead">
-
-
-			Préparation:
-			<br>
-			{{ preparation.etape}}
-
-		</p>
-	</div>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-	aaa
-	<br>
-
-	<div class="card mb-3" style="max-width: 50rem;border-color: #eb6864;">
-		<div class="card-header">Trucs et astuces de la recette</div>
-		<div
-			class="card-body">
-			{# <h4 class="card-title">Astuce </h4> #}
-			
-				
-			
-			{% for astuce in infoRecette.idAstuce %}
-			<a href="">
-				<p class="card-text">{{ astuce.astuce }}</p>
-			</a>
-			{% endfor %}
-			
 		</div>
-	</div>
+	
+
+	
+		<div style="border: 1px solid black; background-color: grey;top: 0;padding: 5px;">
+			<p>Matériel:
+			</p>
+			<ul>
+				{% for ustensile in infoRecette.Idustensile %}
+					<li>{{ ustensile.ustensile }}
+					</li>
+				{% endfor %}
+			</ul>
+
+		</div>
+		<div style="position: sticky;position: -webkit-sticky;position: sticky;top: 0;padding: 5px; background-color: white;box-shadow: grey 1px 1px 5px;">
+			<p>Ingrédients:</p>
+		
+			<ul>
+				{% for ing in infoRecette.recetteIngredient %} 
+					<li>{{ ing.quantite }}{{ ing.unite }} de {{ ing.iding.ingredient }}</li>
+				{% endfor %}
+			</ul>
+
+		</div>
+		<div class="jumbotron">
+			<h1 class="display-3">{{ infoRecette.recette}}</h1>
+			<p class="lead">{{ infoRecette.petitePhrase}}</p>
+			<hr class="my-4">
+			<p>{{ infoRecette.descriptionrecette}}</p>
+			<p class="lead">
 
 
-</div></div>{% endblock %}
+				Préparation:
+				<br>
+				{{ preparation.etape |nl2br }}
+
+			</p>
+		</div>
+
+		
+		<div class="card mb-3" style="max-width: 50rem;border-color: #eb6864;">
+			<div class="card-header">Trucs et astuces de la recette</div>
+			<div
+				class="card-body">
+				{# <h4 class="card-title">Astuce </h4> #}
+				
+					
+				
+				{% for astuce in infoRecette.idAstuce %}
+				<a href="">
+					<p class="card-text">{{ astuce.astuce }}</p>
+				</a>
+				{% endfor %}
+				
+			</div>
+		</div>
+	
+
+
+</div>
+</div>{% endblock %}

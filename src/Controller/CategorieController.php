@@ -8,20 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategorieController extends AbstractController
 {
-   
-    /**
-     * @Route("/", name="base")
-     */
-    public function base(): Response
-    {
-        // Liste de toutes les catégories
-        $repository= $this->getDoctrine()->getRepository(Categorie::class);
-        $categories= $repository->findAll();
-// dd($categories);
-        return $this->render('base/nav.html.twig', [
-            'listCateg' => $categories,
-        ]);
-    }
 
     /**
      * @Route("/recetteCategorie", name="recetteCategorie")

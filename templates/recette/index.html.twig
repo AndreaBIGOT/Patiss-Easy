@@ -15,7 +15,7 @@
             <div class="card mb-3" style="width: 200px;margin-right: 20px;">
                 
                 <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" 
-                style="font-size:1.125rem;text-anchor:middle;background-image: url('/image/general/easy.jpg'); background-position: bottom;opacity: 45%;">
+                style="font-size:1.125rem;text-anchor:middle;background-image: url('/image/categorie/test.png'); background-position: center;opacity: 45%;background-repeat: no-repeat;background-size: cover;">
                     <text x="50%" y="50%" fill="white" dy=".3em" style="font-weight: bold; text-shadow: 3px 3px 4px black;">Recettes EASY</text>
                 </svg>
                 
@@ -56,20 +56,23 @@
     <h1>Dernières publications</h1>
 
     <div style="display: flex;">
-    
+   
         {% for recette in dernieresRecettes %}
+            <a href="{{  path('recetteById', {id: recette.idRecette}) }}" style="text-decoration:none;color:black!important;">
                 <div class="card mb-3" style="width: 200px;margin-right: 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
                         <rect width="100%" height="100%" fill="#868e96"></rect>
-                        <text x="50%" y="50%" fill="black" dy=".3em">Image cap</text>
+                        <text x="50%" y="50%" fill="black" dy=".3em">{{ recette.recette  }}</text>
                     </svg>
                     <div class="card-body">
-                        <p class="card-text">{{ recette.descriptionRecette  }}</p>
+                        <p class="card-text">{{ recette.descriptionRecette |u.truncate(60, " Voir plus...") }}</p>
                     </div>
+            </a>
                     <div class="card-footer text-muted">
                         Publié le {{ recette.datePublication | date("d/m/Y") }}
                     </div>
                 </div>
+            
         {% endfor %}
                 
                 

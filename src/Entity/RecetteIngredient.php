@@ -31,7 +31,7 @@ class RecetteIngredient
     /**
      * @var string
      *
-     * @ORM\Column(name="unite", type="string", length=4, nullable=false)
+     * @ORM\Column(name="unite", type="string", length=10, nullable=false)
      */
     private $unite;
 

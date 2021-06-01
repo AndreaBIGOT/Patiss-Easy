@@ -6,15 +6,11 @@ use App\Entity\Recette;
 use App\Entity\Categorie;
 use App\Entity\Ustensile;
 use App\Entity\Astuce;
-use App\Entity\Preparation;
 use App\Entity\Theme;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bundle\MakerBundle\Doctrine\EntityRelation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
 class RecetteType extends AbstractType

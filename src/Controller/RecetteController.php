@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Theme;
 use App\Entity\Recette;
 use App\Entity\Categorie;
 use App\Form\RecetteType;
-use App\Entity\Ingredient;
 use App\Entity\Preparation;
 use App\Entity\RecetteIngredient;
 use App\Form\RecetteIngredientType;
@@ -19,14 +19,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RecetteController extends AbstractController
 {
     /**
-     * @Route("/index", name="index")
+     * @Route("/", name="index")
      */
     public function index(): Response
     {
-
-        // $repository=$this->getDoctrine()->getRepository(Recette::class);
-        // $lastRecette= $repository->findAll()->setMaxResults(3);
-
         $cnx = $this->getDoctrine()->getManager()->getConnection();
         $sql = "SELECT * FROM `recette` ORDER BY datePublication DESC LIMIT 3";
         $stmt = $cnx->prepare($sql);
@@ -34,9 +30,7 @@ class RecetteController extends AbstractController
 
         $tab = $stmt->fetchAllAssociative();
 
-        // $dernieresRecettes= $recetteRepo->findLastRecette();
         return $this->render('recette/index.html.twig', [
-            'controller_name' => 'RecetteController',
             "dernieresRecettes" => $tab
         ]);
     }
@@ -44,13 +38,12 @@ class RecetteController extends AbstractController
     /**
      * @Route("/recettes/categ/{idCateg}", name="recettes")
      */
-    public function recettes(Categorie $idCateg =null, EntityManagerInterface $manager): Response
+    public function recettes(Categorie $idCateg = null, EntityManagerInterface $manager): Response
     {
         // Liste de toutes les recettes
         $repository = $this->getDoctrine()->getRepository(Recette::class);
-        // $recettes = $repository->findAll();
 
-        
+        // catégories
         $recettes = $manager->createQuery(
             'SELECT r, c
             FROM App\Entity\Recette r
@@ -59,11 +52,31 @@ class RecetteController extends AbstractController
         )->setParameter('id', $idCateg);
 
         // $query = $recettes->getQuery();
-        $recettes= $recettes->execute();
-        
+        $recettes = $recettes->execute();
 
         return $this->render('recette/recettes.html.twig', [
-            'listRecette' => $recettes,
+            'listRecette' => $recettes
+        ]);
+    }
+
+    /**
+     * @Route("/recettes/theme/{id}", name="recettesTheme")
+     */
+    public function recettesTheme(Theme $theme = null, EntityManagerInterface $manager): Response
+    {
+        // thèmes
+        $recettesTheme = $manager->createQuery(
+            'SELECT r, t
+            FROM App\Entity\Recette r
+            INNER JOIN r.idtheme t
+            WHERE t.idtheme = :theme'
+        )->setParameter('theme', $theme);
+
+        $recettesTheme = $recettesTheme->execute();
+
+        return $this->render('recette/recetteByTheme.html.twig', [
+            'listeRecetteTheme' => $recettesTheme,
+            'theme' => $theme
         ]);
     }
 
@@ -76,7 +89,6 @@ class RecetteController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Preparation::class);
         $preparationRecette = $repository->findOneBy(["idrecette" => $recette->getIdrecette()]);
 
-        // dd($recette);
         return $this->render('recette/recetteById.html.twig', [
             'infoRecette' => $recette,
             'preparation' => $preparationRecette
@@ -99,18 +111,17 @@ class RecetteController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Recette::class);
         $listeRecette = $repository->findAll();
 
-        
+
         if ($formAdd->isSubmitted() && $formAdd->isValid()) {
-            
+
             $data = $formAdd->getData();
-            
+
             $data->setDatepublication(new \DateTime());
 
             $manager->persist($data);
             $manager->flush();
-            
-            return $this->redirectToRoute('ajouterPrep', ['idRecette' => $data->getIdrecette()]);
 
+            return $this->redirectToRoute('ajouterPrep', ['idRecette' => $data->getIdrecette()]);
         }
 
         return $this->render('security/admin.html.twig', [
@@ -122,25 +133,25 @@ class RecetteController extends AbstractController
     /**
      * @Route("/admin/ajouterPrep/{idRecette}", name="ajouterPrep")
      */
-    public function ajouterPrep(Request $request, Recette $idRecette, EntityManagerInterface $manager){
-        $recettePrep= new Preparation();
+    public function ajouterPrep(Request $request, Recette $idRecette, EntityManagerInterface $manager)
+    {
+        $recettePrep = new Preparation();
         $recettePrep->setIdrecette($idRecette);
-      
+
         $formAddPrep = $this->createForm(RecettePreparationType::class, $recettePrep);
         $formAddPrep->handleRequest($request);
 
         if ($formAddPrep->isSubmitted() && $formAddPrep->isValid()) {
-            // toutes les infos passent sauf ing    veut mettre post dans data
 
             $data = $formAddPrep->getData();
-            
+
             $manager->persist($recettePrep);
             $manager->flush();
-            
+
             return $this->redirectToRoute('ajouterIng', ["idRecette" => $idRecette->getIdrecette()]);
         }
 
-     
+
         return $this->render('security/ajouterPrep.html.twig', [
             "formAddPrep" => $formAddPrep->createView()
         ]);
@@ -149,25 +160,25 @@ class RecetteController extends AbstractController
     /**
      * @Route("/admin/ajouterIng/{idRecette}", name="ajouterIng")
      */
-    public function ajouterIng(Request $request, Recette $idRecette, EntityManagerInterface $manager){
-        $recetteIng= new RecetteIngredient();
+    public function ajouterIng(Request $request, Recette $idRecette, EntityManagerInterface $manager)
+    {
+        $recetteIng = new RecetteIngredient();
         $recetteIng->setIdrecette($idRecette);
-      
+
         $formAddIng = $this->createForm(RecetteIngredientType::class, $recetteIng);
         $formAddIng->handleRequest($request);
 
         if ($formAddIng->isSubmitted() && $formAddIng->isValid()) {
-            // toutes les infos passent sauf ing    veut mettre post dans data
 
             $data = $formAddIng->getData();
-            
+
             $manager->persist($recetteIng);
             $manager->flush();
-            
+
             return $this->redirectToRoute('ajouterIng', ["idRecette" => $idRecette->getIdrecette()]);
         }
 
-     
+
         return $this->render('security/ajouterIng.html.twig', [
             "formAddIng" => $formAddIng->createView()
         ]);
@@ -193,10 +204,11 @@ class RecetteController extends AbstractController
     /**
      * @Route("/modifier/{id}", name="modifier")
      */
-    public function modifier($id): Response
+    public function modifier(): Response
     {
 
-        return $this->render('recette/admin.html.twig', []);
+        return $this->render('security/modifier.html.twig', [
+        ]);
     }
 
     /**
@@ -206,8 +218,4 @@ class RecetteController extends AbstractController
     {
         return $this->render('recette/contact.html.twig', []);
     }
-
-
-
-    // controller nav, géner do vu, faire appel méthode du contro dans twig grace doc
 }

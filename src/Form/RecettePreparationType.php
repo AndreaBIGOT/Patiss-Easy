@@ -13,8 +13,7 @@ class RecettePreparationType extends AbstractType
     {
         $builder
             ->add('etape')
-            ->add('idrecette')
-        ;
+            ->add('idrecette');
     }
 
     public function configureOptions(OptionsResolver $resolver)
